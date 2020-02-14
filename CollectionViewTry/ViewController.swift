@@ -12,7 +12,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    //🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷
     
+    @IBOutlet weak var fakeTabBar: UIButton!
+    
+    let myCellSize: CGSize = CGSize( width: 148, height: 164) // Got these from the cell on the storyboard
+    
+    let mySpacing: CGFloat = CGFloat( 8.0 )
+    
+    //🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷
     
     //================Data=================
     var colectionArr : [String] = ["1","2","3","4"]
@@ -48,9 +56,23 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         super.viewDidLoad()
         
         //=====delegates====
-        collectionView.delegate = self
+        collectionView.delegate   = self
         collectionView.dataSource = self
         
+        var tempRect: CGRect = collectionView.frame
+        
+        tempRect.origin.y    = 80 // Put below nav bar
+        
+        tempRect.size.width  = ( myCellSize.width * 2 ) + ( mySpacing * 3 )
+        
+        tempRect.size.height = ( fakeTabBar.frame.origin.y - tempRect.origin.y ) - 8
+        
+        // fakeTabBar.frame.origin.y - tempRect.origin.y puttin bottom of collection view ontop of the tabbed button
+        
+        // All typecasting below is ugly.... but Xcode accepts it
+        tempRect.origin.x    = CGFloat( roundf( Float( ( self.view.frame.size.width - tempRect.size.width ) / 2.0) ) ) //centers the collection view horizonatlly
+        
+        collectionView.frame = tempRect
         
     }
     
@@ -69,116 +91,67 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
         
-        
-        
         //let thisElement = colectionArr[indexPath.item]
         
-        let closeFrameSize = bestFrameSize()
+        //let closeFrameSize = bestFrameSize()
         let cellIndex = indexPath.item
         
         cell.categoryimageView.image = imagesF[cellIndex]
         
         cell.categorylabel.text = titlesF[cellIndex]
         
-        
         cell.contentView.layer.cornerRadius = 10
-               cell.contentView.layer.borderWidth = 1.0
-               
-               
-               cell.contentView.layer.borderColor = UIColor.blue.cgColor
-               cell.contentView.layer.masksToBounds = true
-               cell.backgroundColor = UIColor.white
+        cell.contentView.layer.borderWidth = 1.0
+       
+        cell.contentView.layer.borderColor = UIColor.blue.cgColor
+        cell.contentView.layer.masksToBounds = true
+        cell.backgroundColor = UIColor.white
 
-               cell.layer.shadowColor = UIColor.gray.cgColor
-              cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
-               cell.layer.shadowRadius = 2.0
-               cell.layer.shadowOpacity = 1.0
-               cell.layer.masksToBounds = false
-              
-        
+        cell.layer.shadowColor = UIColor.gray.cgColor
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        cell.layer.shadowRadius = 2.0
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.masksToBounds = false
+      
         return cell
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+            // In this function is the code you must implement to your code project if you want to change size of Collection view
+            return myCellSize
         
     }
     
     func bestFrameSize() -> CGFloat {
-           let frameHeight = self.view.frame.height
-           let frameWidth = self.view.frame.width
+        
+           let frameHeight   = self.view.frame.height
+           let frameWidth    = self.view.frame.width
            let bestFrameSize = (frameHeight > frameWidth ) ? frameHeight : frameWidth
            
            return bestFrameSize
+        
        }
     
 }
-
-
-
 
 
 // extention for UICollectionViewDelegateFlowLayout
 extension ViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let bounds = collectionView.bounds
-//        let heightVal = self.view.frame.height
-//        let widthVal = self.view.frame.width
-//        let cellsize = (heightVal < widthVal) ?  bounds.height/2 : bounds.width/2
-//        //collectionView = 2 x width of collectionViewCell + 10
-//
-//
-//        return CGSize(width: cellsize - 10   , height:  cellsize - 10  ) //-10 becacuse of 5 + 5 top/bottom for the height
-        
-        
-        
-        //====================================CELL SPACE============================
-        // Compute the dimension of a cell for an NxN layout with space S between
-        // cells.  Take the collection view's width, subtract (N-1)*S points for
-        // the spaces between the cells, and then divide by N to find the final
-        // dimension for the cell's width and height.
-        let cellsAcross: CGFloat = 2
-        let spaceBetweenCells: CGFloat = 8
-        
-        //let dim = (collectionView.bounds.width - (cellsAcross - 1) * spaceBetweenCells) / cellsAcross
-        //return CGSize(width: dim, height: dim )
-        
-       // var tempRect: CGRect = collectionView.frame
-
-        // modify tempRect here
-
-       // collectionView.frame = tempRect
-        // Update size and location of the collectionView
-        
-      //  Set tempRect.origin.y first....   then...   tempRect.size.height = ( tabBarButton.frame.origin.y - temoRect.origin.y ) - 8
-        
-   //let  collectionViewCellWidth =  ( (collectionView.frame.size.width) -  ( spaceBetweenCells * 3 ) ) / cellsAcross
-        
-       // ( collectionViewCell.size.width * 2 ) + ( 3 * spacing )
-        
-        let collectionViewCellWidth  = (collectionView.bounds.width * 2) + ( 3 * spaceBetweenCells )
-        
-        return CGSize(width: collectionViewCellWidth, height: collectionViewCellWidth )
-        
-        
-        
-        
-
-
-
-        
-        
-        
-        
+        return UIEdgeInsets(top: mySpacing, left: mySpacing, bottom: mySpacing, right: mySpacing)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return mySpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return mySpacing
     }
+    
 }//end of extension  ViewController
+
+
