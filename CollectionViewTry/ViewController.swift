@@ -24,6 +24,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
                 ("Kiwifruit, or Chinese gooseberry is the edible berry of several species of woody vines in the genus Actinidia."),
                 ("The orange is the fruit of the citrus species Citrus × sinensis in the family Rutaceae. "),
                 ("A peach is a soft, juicy and fleshy stone fruit produced by a peach tree.")]
+    
     let imagesF = [UIImage(named: "apple"),
                    UIImage(named: "apricot"),
                    UIImage(named: "banana"),
@@ -35,6 +36,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     
     //==========================================================
+    
+    // multiple number to creat font size based on device screen size
+    let relativeFontWelcomeTitle:CGFloat = 0.045
+    let relativeFontButton:CGFloat = 0.060
+    let relativeFontCellTitle:CGFloat = 0.023
+    let relativeFontCellDescription:CGFloat = 0.015
     
     
     override func viewDidLoad() {
@@ -66,7 +73,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         //let thisElement = colectionArr[indexPath.item]
         
-        //let closeFrameSize = bestFrameSize()
+        let closeFrameSize = bestFrameSize()
         let cellIndex = indexPath.item
         
         cell.categoryimageView.image = imagesF[cellIndex]
@@ -74,7 +81,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         cell.categorylabel.text = titlesF[cellIndex]
         
         
-        cell.contentView.layer.cornerRadius = 5
+        cell.contentView.layer.cornerRadius = 10
                cell.contentView.layer.borderWidth = 1.0
                
                
@@ -94,13 +101,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
     }
     
-//    func bestFrameSize() -> CGFloat {
-//           let frameHeight = self.view.frame.height
-//           let frameWidth = self.view.frame.width
-//           let bestFrameSize = (frameHeight > frameWidth ) ? frameHeight : frameWidth
-//           
-//           return bestFrameSize
-//       }
+    func bestFrameSize() -> CGFloat {
+           let frameHeight = self.view.frame.height
+           let frameWidth = self.view.frame.width
+           let bestFrameSize = (frameHeight > frameWidth ) ? frameHeight : frameWidth
+           
+           return bestFrameSize
+       }
     
 }
 
@@ -116,12 +123,35 @@ extension ViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let bounds = collectionView.bounds
-        let heightVal = self.view.frame.height
-        let widthVal = self.view.frame.width
-        let cellsize = (heightVal < widthVal) ?  bounds.height/2 : bounds.width/2
+//        let bounds = collectionView.bounds
+//        let heightVal = self.view.frame.height
+//        let widthVal = self.view.frame.width
+//        let cellsize = (heightVal < widthVal) ?  bounds.height/2 : bounds.width/2
+//        //collectionView = 2 x width of collectionViewCell + 10
+//
+//
+//        return CGSize(width: cellsize - 10   , height:  cellsize - 10  ) //-10 becacuse of 5 + 5 top/bottom for the height
         
-        return CGSize(width: cellsize - 10   , height:  cellsize - 10  ) //-10 becacuse of 5 + 5 top/bottom for the height
+        
+        
+        //====================================CELL SPACE============================
+        // Compute the dimension of a cell for an NxN layout with space S between
+        // cells.  Take the collection view's width, subtract (N-1)*S points for
+        // the spaces between the cells, and then divide by N to find the final
+        // dimension for the cell's width and height.
+        let cellsAcross: CGFloat = 2
+        let spaceBetweenCells: CGFloat = 8
+        
+        //let dim = (collectionView.bounds.width - (cellsAcross - 1) * spaceBetweenCells) / cellsAcross
+        //return CGSize(width: dim, height: dim )
+        
+        var tempRect: CGRect = collectionView.frame
+
+        
+        
+        
+        
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
