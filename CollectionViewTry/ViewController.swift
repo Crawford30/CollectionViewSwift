@@ -145,9 +145,29 @@ extension ViewController : UICollectionViewDelegateFlowLayout {
         //let dim = (collectionView.bounds.width - (cellsAcross - 1) * spaceBetweenCells) / cellsAcross
         //return CGSize(width: dim, height: dim )
         
-        var tempRect: CGRect = collectionView.frame
+       // var tempRect: CGRect = collectionView.frame
 
+        // modify tempRect here
+
+       // collectionView.frame = tempRect
+        // Update size and location of the collectionView
         
+      //  Set tempRect.origin.y first....   then...   tempRect.size.height = ( tabBarButton.frame.origin.y - temoRect.origin.y ) - 8
+        
+   //let  collectionViewCellWidth =  ( (collectionView.frame.size.width) -  ( spaceBetweenCells * 3 ) ) / cellsAcross
+        
+       // ( collectionViewCell.size.width * 2 ) + ( 3 * spacing )
+        
+        let collectionViewCellWidth  = (collectionView.bounds.width * 2) + ( 3 * spaceBetweenCells )
+        
+        return CGSize(width: collectionViewCellWidth, height: collectionViewCellWidth )
+        
+        
+        
+        
+
+
+
         
         
         
